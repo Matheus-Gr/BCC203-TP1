@@ -54,9 +54,8 @@ void generateFile(char* filename, int total_items) {
     for (int i = 0; i < total_items; ++i) {
         item.key = i + 1;
         item.data1 = rand() % LONG_MAX;
-//        item.data2 = randString();
-        item.data2 = "hello";
-//        printf("%s".)
+        item.data2 = randString();
+//        item.data2 = "hello";
         fwrite(&item, sizeof(item), 1, file);
     }
 
