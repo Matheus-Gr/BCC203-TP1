@@ -8,6 +8,7 @@
 #define FILENAME "../file.bin"
 #define ITEMSPERPAGE 20
 #define ORDERM 2
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -16,7 +17,7 @@
 typedef struct {
     int key;
     long int data1;
-    char *data2;
+    char data2[5000];
 } ItemType;
 
 typedef struct PageType* PointerType;

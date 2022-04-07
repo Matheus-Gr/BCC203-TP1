@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
 
     generateFile(FILENAME,total_items);
     if(show_result) readFile(FILENAME);
-
     int n_pages = total_items / ITEMSPERPAGE;
     int index_table[n_pages];
     createPages(index_table,n_pages);

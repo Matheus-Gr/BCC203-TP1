@@ -54,9 +54,11 @@ void generateFile(char* filename, int total_items) {
     for (int i = 0; i < total_items; ++i) {
         item.key = i + 1;
         item.data1 = rand() % LONG_MAX;
-        item.data2 = randString();
+        char* text = randString();
+        strcpy(item.data2, text);
+//        item.data2 = randString();
 //        item.data2 = "hello";
-        fwrite(&item, sizeof(item), 1, file);
+        fwrite(&item, sizeof(ItemType) , 1, file);
     }
 
 //    free(item.data2);
