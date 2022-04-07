@@ -33,7 +33,7 @@ void validateArguments(int argc, int method, int total_items, int order,
 
 char *randString();
 
-void generateFile(char *filename, int total_items);
+void generateFile(char *filename, int total_items, int order);
 
 void readFile(char *filename);
 

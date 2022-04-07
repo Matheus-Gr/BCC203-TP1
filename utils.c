@@ -46,19 +46,58 @@ char* randString() {
     return text;
 }
 
-void generateFile(char* filename, int total_items) {
+void generateFile(char* filename, int total_items, int order) {
     FILE *file = fopen(filename, "wb");
 
     ItemType item;
     srand(time(NULL));
-    for (int i = 0; i < total_items; ++i) {
-        item.key = i + 1;
-        item.data1 = rand() % LONG_MAX;
-        char* text = randString();
-        strcpy(item.data2, text);
-//        item.data2 = randString();
-//        item.data2 = "hello";
-        fwrite(&item, sizeof(ItemType) , 1, file);
+
+    int random_array[total_items];
+
+    int duplicated = 0;
+
+    switch (order) {
+        case 1:
+            for (int i = 0; i < total_items; ++i) {
+                item.key = i + 1;
+                item.data1 = rand() % LONG_MAX;
+                char* text = randString();
+                strcpy(item.data2, text);
+                fwrite(&item, sizeof(ItemType) , 1, file);
+            }
+            break;
+
+        case 2:
+            for (int i = total_items; i > 0; --i) {
+                item.key = i;
+                item.data1 = rand() % LONG_MAX;
+                char* text = randString();
+                strcpy(item.data2, text);
+                fwrite(&item, sizeof(ItemType) , 1, file);
+            }
+            break;
+
+        case 3:
+            for (int i = 0; i < total_items; ++i) random_array[i] = -1;
+
+            for (int i = 0; i < total_items; ++i) {
+                do {
+                    item.key = rand() % total_items + 1;
+                    random_array[i] = item.key;
+                    int occurancy = 0;
+                    for (int j = 0; j < total_items; ++j) {
+                        if(random_array[j] == item.key) occurancy ++;
+                    }
+                    duplicated = occurancy > 1 ? 1 : 0;
+                } while (duplicated);
+
+                item.data1 = rand() % LONG_MAX;
+                char* text = randString();
+                strcpy(item.data2, text);
+                fwrite(&item, sizeof(ItemType) , 1, file);
+            }
+            break;
+
     }
 
 //    free(item.data2);

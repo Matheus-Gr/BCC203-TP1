@@ -13,8 +13,9 @@ int main(int argc, char *argv[]) {
 
     validateArguments(argc, method, total_items, order, key, show_result);
 
-    generateFile(FILENAME,total_items);
+    generateFile(FILENAME,total_items, order);
     if(show_result) readFile(FILENAME);
+
     int n_pages = total_items / ITEMSPERPAGE;
     int index_table[n_pages];
     createPages(index_table,n_pages);
