@@ -14,6 +14,6 @@ ItemType indexedSearch(const int *index_table, int key, int n_pages);
 
 void createBinaryTree();
 
-ItemType binaryTreeSearch(FILE *binaryTree, BinaryNode *nodeAux, int key);
+ItemType binaryTreeSearch(FILE *binaryTree, int key);
 
 #endif //TP1_SEARCH_H

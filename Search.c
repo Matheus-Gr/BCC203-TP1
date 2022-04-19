@@ -62,12 +62,22 @@ void createBinaryTree() {
         exit(1);
     }
 
+//    BinaryNode bnodeaux;
+//    BinaryNode bnodeaux2;
+//    ItemType itemaux;
+//    fread(&itemaux, sizeof(ItemType),1,file);
+//    bnodeaux.pos = 2;
+//    bnodeaux.right = 2;
+//    bnodeaux.left = 2;
+//    bnodeaux.item = itemaux;
+//    fwrite(&bnodeaux, sizeof(BinaryNode),1,binaryTree);
+
     ItemType item;
     BinaryNode child;
     BinaryNode aux;
 
     int cont = 0;
-    int posFilho;
+    int childPos;
     int notEmpty;
     while (fread(&item,sizeof(ItemType), 1, file)) {
         notEmpty = 1;
@@ -76,48 +86,43 @@ void createBinaryTree() {
         child.item = item;
         child.pos = cont;
 
-//        printf("write: %d\n", child.item.key);
         fwrite(&child, sizeof(BinaryNode), 1, binaryTree);
-//        fclose(binaryTree);
-//        FILE *binaryTree = fopen(BINARYTREEFILE, "rb");
-//        BinaryNode teste;
-//        fread(&teste, sizeof(BinaryNode), 1, binaryTree);
-//        printf("read: %d\n", teste.item.key);
         cont++;
 
         if (cont != 1) {
-            posFilho = 0;
+            rewind(binaryTree);
+            childPos = 0;
             while (fread(&aux, sizeof(BinaryNode),
                          1, binaryTree) && notEmpty) {
                 if (item.key < aux.item.key)
                     if (aux.left == -1) {
                         aux.left = cont - 1;
                         fseek(binaryTree,
-                              (int) (posFilho * sizeof(BinaryNode)),
+                              (int) (childPos * sizeof(BinaryNode)),
                               SEEK_SET);
                         fwrite(&aux, sizeof(BinaryNode),
                                1, binaryTree);
                         notEmpty = 0;
                     } else {
                         fseek(binaryTree,
-                              (int) ((aux.left) * sizeof(BinaryNode)),
+                              (int) (aux.left * sizeof(BinaryNode)),
                               SEEK_SET);
-                        posFilho = aux.left;
+                        childPos = aux.left;
                     }
                 else {
                     if (aux.right == -1) {
                         aux.right = cont - 1;
                         fseek(binaryTree,
-                              (int) (posFilho * sizeof(BinaryNode)),
+                              (int) (childPos * sizeof(BinaryNode)),
                               SEEK_SET);
                         fwrite(&aux, sizeof(BinaryNode),
                                1, binaryTree);
                         notEmpty = 0;
                     } else {
                         fseek(binaryTree,
-                              (int) ((aux.right) * sizeof(BinaryNode)),
+                              (int) (aux.right * sizeof(BinaryNode)),
                               SEEK_SET);
-                        posFilho = aux.right;
+                        childPos = aux.right;
                     }
                 }
             }
@@ -129,24 +134,26 @@ void createBinaryTree() {
     fclose(file);
 }
 
-ItemType binaryTreeSearch(FILE *binaryTree, BinaryNode *nodeAux, int key) {
-    fread(nodeAux, sizeof(BinaryNode), 1, binaryTree);
-    printf("%d \n", nodeAux->item.key);
-    if (nodeAux->item.key == key) {
-        return nodeAux->item;
-    } else if (key > nodeAux->item.key && nodeAux->right != -1) {
+ItemType binaryTreeSearch(FILE *binaryTree, int key) {
+    BinaryNode nodeAux;
+    fread(&nodeAux, sizeof(BinaryNode), 1, binaryTree);
+    printf("READ: %d\n", nodeAux.item.key);
+    if (nodeAux.item.key == key) {
+        printf("==\n", nodeAux.item.key);
+        return nodeAux.item;
+    } else if (key > nodeAux.item.key && nodeAux.right != -1) {
+        printf(">\n", nodeAux.item.key);
         fseek(binaryTree,
-              (int) (nodeAux->right * sizeof(BinaryNode)),
+              (int) (nodeAux.right * sizeof(BinaryNode)),
               SEEK_SET);
-        return (binaryTreeSearch(binaryTree, nodeAux, key));
-    } else if (key < nodeAux->item.key && nodeAux->left != -1) {
+        return (binaryTreeSearch(binaryTree, key));
+    } else if (key < nodeAux.item.key && nodeAux.left != -1) {
+        printf("<\n", nodeAux.item.key);
         fseek(binaryTree,
-              (int) (nodeAux->left * sizeof(BinaryNode)),
+              (int) (nodeAux.left * sizeof(BinaryNode)),
               SEEK_SET);
-        return (binaryTreeSearch(binaryTree, nodeAux, key));
+        return (binaryTreeSearch(binaryTree, key));
     }
 
-    ItemType nullItem;
-    nullItem.key = -1;
-    return nullItem;
+    return nodeAux.item;
 }
