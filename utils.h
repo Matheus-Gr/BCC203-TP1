@@ -6,6 +6,7 @@
 #define TP1_UTILS_H
 
 #define FILENAME "../file.bin"
+#define BINARYTREEFILE "../binaryTree.bin"
 #define ITEMSPERPAGE 20
 #define ORDERM 2
 
@@ -19,6 +20,13 @@ typedef struct {
     long int data1;
     char data2[5000];
 } ItemType;
+
+typedef struct {
+    int left;
+    int right;
+    ItemType item;
+    int pos;
+} BinaryNode;
 
 typedef struct PageType* PointerType;
 

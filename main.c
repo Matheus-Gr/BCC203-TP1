@@ -16,10 +16,39 @@ int main(int argc, char *argv[]) {
     generateFile(FILENAME,total_items, order);
     if(show_result) readFile(FILENAME);
 
+
+    ItemType item;
     int n_pages = total_items / ITEMSPERPAGE;
     int index_table[n_pages];
-    createPages(index_table,n_pages);
-    ItemType item = indexedSequentialAccess(index_table, key, n_pages);
+    switch (method) {
+        case 1:
+                createPages(index_table,n_pages);
+                item = indexedSearch(index_table, key, n_pages);
+            break;
+
+        case 2:
+            createBinaryTree();
+            FILE *binaryTree = fopen(BINARYTREEFILE, "rb");
+            if (binaryTree == NULL) {
+                printf("Error ao abrir arquivo!\n");
+                exit(1);
+            }
+            BinaryNode *nodeAux;
+            fread(nodeAux, sizeof(BinaryNode), 1, binaryTree);
+            printf("%d \n",nodeAux->item.key);
+            fread(nodeAux, sizeof(BinaryNode), 1, binaryTree);
+            printf("%d \n",nodeAux->item.key);
+            fread(nodeAux, sizeof(BinaryNode), 1, binaryTree);
+            printf("%d \n",nodeAux->item.key);
+            item = binaryTreeSearch(binaryTree,NULL,key);
+            break;
+
+        default:
+            break;
+    }
+
+
+
 
     printf("\nFounded:\nkey: %-15d data1: %-15ld data2: %.5s\n",item.key,item.data1,item.data2);
     return 0;
