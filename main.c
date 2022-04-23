@@ -21,8 +21,9 @@ int main(int argc, char *argv[]) {
     int n_pages = total_items / ITEMSPERPAGE;
     int index_table[n_pages];
 
-    BinaryNode bnodeaux;
-    ItemType itemaux;
+    clock_t begin = clock();
+
+
     switch (method) {
         case 1:
             createPages(index_table, n_pages);
@@ -30,39 +31,8 @@ int main(int argc, char *argv[]) {
             break;
 
         case 2:
-//            fread(&itemaux, sizeof(ItemType),1,file);
-//            printf("\nItem:\nkey: %-15d data1: %-15ld data2: %.5s\n",itemaux.key,itemaux.data1,itemaux.data2);
-//            bnodeaux.pos = 2;
-//            bnodeaux.right = 2;
-//            bnodeaux.left = 2;
-//            bnodeaux.item = itemaux;
-//            fwrite(&bnodeaux, sizeof(BinaryNode),1,binaryTree);
-//            fclose(binaryTree);
-//            binaryTree = fopen(BINARYTREEFILE, "rb");
-//            fread(&bnodeaux, sizeof(ItemType),1,binaryTree);
-//            printf("\nItem:\nkey: %-15d data1: %-15ld data2: %.5s\n",bnodeaux.item.key,bnodeaux.item.data1,bnodeaux.item.data2);
             createBinaryTree();
-//            FILE *binaryTree = fopen(BINARYTREEFILE, "rb");
-//            if (binaryTree == NULL) {
-//                printf("Error ao abrir arquivo!\n");
-//                exit(1);
-//            }
-            BinaryNode bnodeaux2;
-//            FILE *binaryTree = fopen(BINARYTREEFILE, "rb");
-//            fread(&bnodeaux2, sizeof(BinaryNode),1,binaryTree);
-//            printf("\nItem:\nkey: %-15d data1: %-15ld data2: %.5s pos: %d\n",
-//                   bnodeaux2.item.key, bnodeaux2.item.data1,
-//                   bnodeaux2.item.data2, bnodeaux2.pos);
-//            fread(nodeAux, sizeof(BinaryNode), 1, binaryTree);
-//            printf("%d \n",nodeAux->item.key);
-//            fread(nodeAux, sizeof(BinaryNode), 1, binaryTree);
-//            printf("%d \n",nodeAux->item.key);
             FILE *binaryTree = fopen(BINARYTREEFILE, "rb");
-//            while (fread(&bnodeaux2, sizeof(BinaryNode), 1, binaryTree))
-//                printf("--key: %-15d data1: %-15ld data2: %.5s    left: %-5d right: %-5d pos: %-5d\n",
-//                       bnodeaux2.item.key, bnodeaux2.item.data1,
-//                       bnodeaux2.item.data2,
-//                       bnodeaux2.left, bnodeaux2.right, bnodeaux2.pos);
             item = binaryTreeSearch(binaryTree, key);
             break;
 
@@ -70,8 +40,11 @@ int main(int argc, char *argv[]) {
             break;
     }
 
+    clock_t end_time = clock();
+    double time_spent = (double)(end_time - begin) / CLOCKS_PER_SEC;
 
-    printf("\nFounded:\nkey: %-15d data1: %-15ld data2: %.5s\n", item.key,
-           item.data1, item.data2);
+    printf("\nFounded:\nkey: %-15d data1: %-15ld data2: %.5s\n"
+           "Execution Time: %.2f", item.key,item.data1, item.data2,time_spent);
+
     return 0;
 }

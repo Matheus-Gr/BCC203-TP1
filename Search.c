@@ -137,18 +137,14 @@ void createBinaryTree() {
 ItemType binaryTreeSearch(FILE *binaryTree, int key) {
     BinaryNode nodeAux;
     fread(&nodeAux, sizeof(BinaryNode), 1, binaryTree);
-    printf("READ: %d\n", nodeAux.item.key);
     if (nodeAux.item.key == key) {
-        printf("==\n", nodeAux.item.key);
         return nodeAux.item;
     } else if (key > nodeAux.item.key && nodeAux.right != -1) {
-        printf(">\n", nodeAux.item.key);
         fseek(binaryTree,
               (int) (nodeAux.right * sizeof(BinaryNode)),
               SEEK_SET);
         return (binaryTreeSearch(binaryTree, key));
     } else if (key < nodeAux.item.key && nodeAux.left != -1) {
-        printf("<\n", nodeAux.item.key);
         fseek(binaryTree,
               (int) (nodeAux.left * sizeof(BinaryNode)),
               SEEK_SET);
