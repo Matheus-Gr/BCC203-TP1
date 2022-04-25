@@ -16,9 +16,9 @@ int searchBTree(ItemType *item, PointerType Tree) {
     }
 
     if (item->key < Tree->items[i - 1].key)
-        return searchBTree(item, Tree->pagePointers[i - 1]);
+        return searchBTree(item, Tree->pointers[i - 1]);
     else
-        return searchBTree(item, Tree->pagePointers[i]);
+        return searchBTree(item, Tree->pointers[i]);
 }
 
 void Imprime(PointerType arvore) {
@@ -26,7 +26,7 @@ void Imprime(PointerType arvore) {
     if (arvore == NULL)
         return;
     while (i <= arvore->n_items) {
-        Imprime(arvore->pagePointers[i]);
+        Imprime(arvore->pointers[i]);
         if (i != arvore->n_items)
             printf("%d ", arvore->items[i].key);
         i++;
@@ -36,7 +36,7 @@ void Imprime(PointerType arvore) {
 
 
 void insertInPage(PointerType curPage, ItemType item,
-                  PointerType rightPointer) {
+                  PointerType right_pointer) {
     int pos_not_found;
     int k = curPage->n_items;
     pos_not_found = (k > 0);
@@ -47,12 +47,12 @@ void insertInPage(PointerType curPage, ItemType item,
             break;
         }
         curPage->items[k] = curPage->items[k - 1];
-        curPage->pagePointers[k + 1] = curPage->pagePointers[k];
+        curPage->pointers[k + 1] = curPage->pointers[k];
         k--;
         if (k < 1) pos_not_found = 0;
     }
     curPage->items[k] = item;
-    curPage->pagePointers[k + 1] = rightPointer;
+    curPage->pointers[k + 1] = right_pointer;
     curPage->n_items++;
 }
 
@@ -78,7 +78,7 @@ void recursiveInsert(ItemType item, PointerType tree, short *grow,
 
     if (item.key < tree->items[i - 1].key) i--;
 
-    recursiveInsert(item, tree->pagePointers[i], grow,
+    recursiveInsert(item, tree->pointers[i], grow,
                     item_returned, right_child);
 
     if (!*grow) return;
@@ -91,11 +91,11 @@ void recursiveInsert(ItemType item, PointerType tree, short *grow,
     //Página tem que ser dividida
     temp_page = (PointerType) malloc(sizeof(PageType));
     temp_page->n_items = 0;
-    temp_page->pagePointers[0] = NULL;
+    temp_page->pointers[0] = NULL;
 
     if (i < M + 1) {
         insertInPage(temp_page, tree->items[MM - 1],
-                     tree->pagePointers[MM]);
+                     tree->pointers[MM]);
         tree->n_items--;
         insertInPage(tree, *item_returned,
                      *right_child);
@@ -104,11 +104,11 @@ void recursiveInsert(ItemType item, PointerType tree, short *grow,
 
     for (int j = M + 2; j <= MM; j++) {
         insertInPage(temp_page, tree->items[j - 1],
-                     tree->pagePointers[j]);
+                     tree->pointers[j]);
     }
 
     tree->n_items = M;
-    temp_page->pagePointers[0] = tree->pagePointers[M + 1];
+    temp_page->pointers[0] = tree->pointers[M + 1];
     *item_returned = tree->items[M];
     *right_child = temp_page;
 
@@ -126,8 +126,8 @@ void insertInBTree(ItemType item, PointerType *tree) {
         temp_page = (PageType *) malloc(sizeof(PageType));
         temp_page->n_items = 1;
         temp_page->items[0] = item_returned;
-        temp_page->pagePointers[1] = page_returned;
-        temp_page->pagePointers[0] = *tree;
+        temp_page->pointers[1] = page_returned;
+        temp_page->pointers[0] = *tree;
         *tree = temp_page;
     }
 }

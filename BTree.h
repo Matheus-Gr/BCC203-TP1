@@ -12,18 +12,17 @@ typedef struct PageType* PointerType;
 typedef struct PageType{
     short n_items;
     ItemType items[MM];
-    PointerType pagePointers[MM + 1];
+    PointerType pointers[MM + 1];
 } PageType;
 
 //--------Funções --------
 //função de inicialização
-void Inicializa (PointerType Arvore);
 //função de pesquisa
 int searchBTree (ItemType *x, PointerType Tree);
 //função de caminhamento e de impressão dos dados em uma arvore
 void Imprime(PointerType arvore);
 //funções de inserção
-void insertInPage (PointerType curPage, ItemType item, PointerType rightPointer);
+void insertInPage (PointerType curPage, ItemType item, PointerType right_pointer);
 void recursiveInsert (ItemType item, PointerType tree, short *grow, ItemType *item_returned, PointerType *right_child);
 void insertInBTree (ItemType item, PointerType *tree);
 //função específica do TP

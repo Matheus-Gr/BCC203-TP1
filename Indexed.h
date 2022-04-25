@@ -10,6 +10,7 @@
 #define ITEMSPERPAGE 20
 
 //DESCRIÇÃO DAS FUNÇÕES NO ARQUIVO .C CORRESPONDENTE
+
 void createIndexTable(int *index_table, int n_pages);
 
 ItemType indexedSearch(const int *index_table, int key, int n_pages,

@@ -32,6 +32,7 @@ typedef struct {
 } ItemType;
 
 //DESCRIÇÃO DAS FUNÇÕES NO ARQUIVO .C CORRESPONDENTE
+
 void validateArguments(int argc, int method, int total_items, int order,
                        int key, char *show_result);
 

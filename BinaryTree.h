@@ -25,6 +25,7 @@ typedef struct {
 } BinaryNode;
 
 //DESCRIÇÃO DAS FUNÇÕES NO ARQUIVO .C CORRESPONDENTE
+
 void createBinaryTree();
 
 ItemType binaryTreeSearch(FILE *binaryTree, int key);
