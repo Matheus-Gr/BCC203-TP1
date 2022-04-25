@@ -4,7 +4,17 @@
 
 #include "utils.h"
 
-
+/* Função responsavel por validar os argumentos passados ao executar o programa
+ * afim de evitar errors de tipagem e afins
+ *
+ * argc = Quantidade de argumentos passados
+ * method = Argumento que define qual metodo sera utilizado
+ * total_items = Argumento que define a quantidade de arquivos
+ * order = Argumento que define a ordem dos registros
+ * key = Argumento que define a chave a ser procurada pelo programa
+ * show_result = Argumento OPICIONAL que define se a tabela será de todos os
+ * arquivos será mostrada no terminal
+ */
 void validateArguments(int argc, int method, int total_items, int order,
                        int key, char *show_result) {
     if (argc < 2) {
@@ -29,6 +39,12 @@ void validateArguments(int argc, int method, int total_items, int order,
     }
 }
 
+/* Função responsavel por gerar aleatoriamente uma String totalmente aleatoria
+ * de 5000 caracteres que será utilizada para prencher o campo 'data2' dos
+ * registros
+ *
+ * return = String gerada
+ */
 char *randString() {
     char nullStr[] = "";
     char *text = (char *) malloc(5001 * sizeof(char));
@@ -45,8 +61,21 @@ char *randString() {
     return text;
 }
 
-void generateFile(char *filename, int total_items, int order) {
-    FILE *file = fopen(filename, "wb");
+/* Função responsavel por gerar o arquivo que serão realizadas as consultas,
+ * contendo todos os registros na ordem desejada
+ *
+ * total_items = Total de registros que serão criados
+ * order = ordem que serão gerados os registros, sendo:
+ *      1 para Crescente
+ *      2 para Decrescente
+ *      3 para Aletório
+ */
+void generateFile(int total_items, int order) {
+    FILE *file = fopen(FILENAME,"wb");
+    if (file == NULL) {
+        printf("Error ao abrir arquivo!\n");
+        exit(1);
+    }
 
     ItemType item;
     srand(time(NULL));
@@ -101,10 +130,13 @@ void generateFile(char *filename, int total_items, int order) {
             break;
     }
 
-//    free(item.data2);
     fclose(file);
 }
 
+/* Função responsavel por imprimir na tela o arquivo desejado
+ *
+ * filename = String contendo nome do arquivo desejado
+ */
 void readFile(char *filename) {
     FILE *file = fopen(filename, "rb");
     if (file == NULL) {
@@ -118,34 +150,3 @@ void readFile(char *filename) {
                item.key, item.data1, item.data2);
     fclose(file);
 }
-
-void freeMatrix(ItemType **matrix, int n_pages) {
-    for (int i = 0; i < n_pages; ++i) {
-        free(matrix[i]);
-    }
-    free(matrix);
-}
-
-void createTestFile(int method, int total_items, int order,
-                    int show_result, int n_test) {
-    char filename[100];
-
-    FILE *file = fopen(filename, "w");
-    if (file == NULL) {
-        printf("Error ao abrir arquivo!\n");
-        exit(1);
-    }
-
-    char *print = "";
-    if (show_result) strcat(print, "-P");
-
-
-    int mod = total_items / n_test;
-    for (int i = 0; i < total_items; i++) {
-        if (i % mod == 0) {
-            fprintf(file,"%d %d %d %d %s\n", method, total_items, order, i, print);
-        }
-    }
-    fclose(file);
-}
-

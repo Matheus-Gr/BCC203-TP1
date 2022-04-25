@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 
     validateArguments(argc, method, total_items, order, key, show_result);
 
-    generateFile(FILENAME, total_items, order);
+    generateFile(total_items, order);
     if (show_result) readFile(FILENAME);
 
 
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
     switch (method) {
         case 1:
-            createPages(index_table, n_pages);
+            createIndexTable(index_table, n_pages);
             item = indexedSearch(index_table, key, n_pages,total_items);
             break;
 

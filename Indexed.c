@@ -4,7 +4,16 @@
 
 #include "Indexed.h"
 
-void createPages(int *index_table, int n_pages) {
+/* Responsavel por criar a tabela de indexes, que será utilizada como uma
+ * paginação. A tabela 'index_table' de tamanho 'n_pages' será prenchida com
+ * o valor da chave do primeiro item da "pagina" correspondente, "pagina" essa
+ * definida pelo tamanho 'ITEMSPERPAGE', que dara "saltos" no arquivo com este
+ * tamanho definido.
+ *
+ * index_table = tabela que será passada por parâmetro contendo os indexes
+ * n_pages = numero de "paginas" que define o tamanho da tabela de indexes
+ */
+void createIndexTable(int *index_table, int n_pages) {
     FILE *file = fopen(FILENAME, "rb");
     if (file == NULL) {
         printf("Error ao abrir arquivo!\n");
@@ -22,6 +31,22 @@ void createPages(int *index_table, int n_pages) {
     fclose(file);
 }
 
+/* Este é o algoritimo resposável pelo processo de busca no arquivo indexado.
+ * Tendo em vista que o arquivo contendo os registro precisa estar ordenado,
+ * a busca utiliza o vetor 'index_table' que conta em cada posição a chave que
+ * representa o index da pagina de mesma posição, o algoritimo compara a chave
+ * solicita com as chaves dos index. Ao achar uma determinada chave MAIOR que
+ * a procurada, indica que o item procurado esta na pagina anterior. Assim
+ * então o algoritimo busca somente aquela chave necessária, lendo então
+ * registro por registro até encontrar o solicitado
+ *
+ * index_table = Table que contem os indexes
+ * key = chave do registro proucurado
+ * n_pages = Número total de páginas
+ * total_items = Número total de registros no arquivo
+ *
+ * return = Item proucurado
+ */
 ItemType indexedSearch(const int *index_table,
                        int key, int n_pages,int total_items) {
     FILE *file = fopen(FILENAME, "rb");
