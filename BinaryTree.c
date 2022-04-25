@@ -94,7 +94,7 @@ void createBinaryTree() {
 
 /* Função responsável pela busca na arvore binaria. A busca é feita de modo
  * recursivo, sempre lendo o arquivo e comparando o registro lido que é guardado
- * em uma variavle auxiliar 'nodeAUx', com a chave procurada. Caso a chave
+ * em uma variavle auxiliar 'nodeAux', com a chave procurada. Caso a chave
  * proucurada for menor que a do registro lido ele encaminha para esquerda
  * utilizando a variavel 'left' para saber a posição do registro a esquerda até
  * encontrar o item necessario ou não haver mais items a esquerda, 'left = -1',
