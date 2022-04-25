@@ -5,7 +5,6 @@
 #include "utils.h"
 
 
-
 void validateArguments(int argc, int method, int total_items, int order,
                        int key, char *show_result) {
     if (argc < 2) {
@@ -30,23 +29,23 @@ void validateArguments(int argc, int method, int total_items, int order,
     }
 }
 
-char* randString() {
+char *randString() {
     char nullStr[] = "";
-    char *text = (char*) malloc(5001 * sizeof(char));
-    strcpy(text,nullStr);
+    char *text = (char *) malloc(5001 * sizeof(char));
+    strcpy(text, nullStr);
 
     char current_char;
     char str_base[] = "0123456789"
                       "abcdefghijklmnopqrstuvwxyz"
                       "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (int i = 0; i < 5000; ++i) {
-        current_char = str_base[rand() % (sizeof (str_base) - 1)];
+        current_char = str_base[rand() % (sizeof(str_base) - 1)];
         strncat(text, &current_char, 1);
     }
     return text;
 }
 
-void generateFile(char* filename, int total_items, int order) {
+void generateFile(char *filename, int total_items, int order) {
     FILE *file = fopen(filename, "wb");
 
     ItemType item;
@@ -61,9 +60,9 @@ void generateFile(char* filename, int total_items, int order) {
             for (int i = 0; i < total_items; ++i) {
                 item.key = i + 1;
                 item.data1 = rand() % LONG_MAX;
-                char* text = randString();
+                char *text = randString();
                 strcpy(item.data2, text);
-                fwrite(&item, sizeof(ItemType) , 1, file);
+                fwrite(&item, sizeof(ItemType), 1, file);
             }
             break;
 
@@ -71,9 +70,9 @@ void generateFile(char* filename, int total_items, int order) {
             for (int i = total_items; i > 0; --i) {
                 item.key = i;
                 item.data1 = rand() % LONG_MAX;
-                char* text = randString();
+                char *text = randString();
                 strcpy(item.data2, text);
-                fwrite(&item, sizeof(ItemType) , 1, file);
+                fwrite(&item, sizeof(ItemType), 1, file);
             }
             break;
 
@@ -86,25 +85,27 @@ void generateFile(char* filename, int total_items, int order) {
                     random_array[i] = item.key;
                     int occurancy = 0;
                     for (int j = 0; j < total_items; ++j) {
-                        if(random_array[j] == item.key) occurancy ++;
+                        if (random_array[j] == item.key) occurancy++;
                     }
                     duplicated = occurancy > 1 ? 1 : 0;
                 } while (duplicated);
-
+//                printf("key = %d     total filed: %d\n",item.key,i+1);
                 item.data1 = rand() % LONG_MAX;
-                char* text = randString();
+                char *text = randString();
                 strcpy(item.data2, text);
-                fwrite(&item, sizeof(ItemType) , 1, file);
+                fwrite(&item, sizeof(ItemType), 1, file);
             }
             break;
 
+        default:
+            break;
     }
 
 //    free(item.data2);
     fclose(file);
 }
 
-void readFile(char* filename){
+void readFile(char *filename) {
     FILE *file = fopen(filename, "rb");
     if (file == NULL) {
         printf("Error ao abrir arquivo!\n");
@@ -114,15 +115,37 @@ void readFile(char* filename){
 
     while (fread(&item, sizeof(ItemType), 1, file))
         printf("key: %-15d data1: %-15ld data2: %.5s\n",
-               item.key,item.data1,item.data2);
+               item.key, item.data1, item.data2);
     fclose(file);
 }
 
-void freeMatrix(ItemType** matrix, int n_pages){
+void freeMatrix(ItemType **matrix, int n_pages) {
     for (int i = 0; i < n_pages; ++i) {
         free(matrix[i]);
     }
     free(matrix);
 }
 
+void createTestFile(int method, int total_items, int order,
+                    int show_result, int n_test) {
+    char filename[100];
+
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error ao abrir arquivo!\n");
+        exit(1);
+    }
+
+    char *print = "";
+    if (show_result) strcat(print, "-P");
+
+
+    int mod = total_items / n_test;
+    for (int i = 0; i < total_items; i++) {
+        if (i % mod == 0) {
+            fprintf(file,"%d %d %d %d %s\n", method, total_items, order, i, print);
+        }
+    }
+    fclose(file);
+}
 

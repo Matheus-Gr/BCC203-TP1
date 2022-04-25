@@ -6,14 +6,15 @@
 #define TP1_UTILS_H
 
 #define FILENAME "../file.bin"
-#define BINARYTREEFILE "../binaryTree.bin"
-#define ITEMSPERPAGE 20
-#define ORDERM 2
+#define TRUE 1
+#define FALSE 0
+
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <limits.h>
 
 typedef struct {
     int key;
@@ -28,13 +29,7 @@ typedef struct {
     int pos;
 } BinaryNode;
 
-typedef struct PageType* PointerType;
 
-typedef struct {
-    short n_items;
-    ItemType items[ORDERM];
-    PointerType pointers[ORDERM + 1];
-} PageType;
 
 void validateArguments(int argc, int method, int total_items, int order,
                        int key, char *show_result);
@@ -47,4 +42,6 @@ void readFile(char *filename);
 
 void freeMatrix(ItemType **matrix, int n_pages);
 
+void createTestFile(int method, int total_items, int order,
+                    int show_result, int n_test);
 #endif //TP1_UTILS_H
