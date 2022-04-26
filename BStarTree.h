@@ -10,33 +10,49 @@
 #include "utils.h"
 #include "BTree.h"
 
-//Estruturas
+// Estrutura auxiliar para ponteiros de pagina
 typedef struct PageTypeS *PointerTypeS;
 
+/* Definição que será utilizada para definir se a pagina será interna ou
+ * externa
+ */
 typedef enum {
     Inter,
     Extern
 } IntExtType;
 
+/* Definição da estrutura que será utilizada como Nó da arvore B estrela
+ *
+ * Pt = definição de externa e interna
+ * int_num = Numero de registros interno
+ * intern_items = Registros internos
+ * inter_pointers = ponteiros para os registros filhos internos
+ * ext_num = Numero externo
+ * extern_items = Items externos
+ * UU = paginas
+ * U0 = Pagina interna
+ * U1 = pagina externa
+ */
 typedef struct PageTypeS {
     IntExtType Pt;
     union
     {
         struct
-        { //Pagina interna
+        {
             int int_num;
             int intern_items[MM];
             PointerTypeS inter_pointers[MM + 1];
         } U0;
         struct
-        { //Pagina externa (folha)
+        {
             int ext_num;
             ItemType extern_items[MM * 2];
         } U1;
     } UU;
 } PageTypeS;
 
-//Protótipos de funções
+//Funções comentadas no arquivo .c correspondente
+
 int searchBStar(ItemType *item, PointerTypeS page);
 void createBStarTree(FILE *file, PointerTypeS *page);
 void addInStar(ItemType item, PointerTypeS *page);

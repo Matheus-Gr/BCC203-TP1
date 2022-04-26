@@ -146,9 +146,7 @@ ItemType bTreeCreateAndSearch(int key) {
         fread(&reg, sizeof(ItemType), 1, file);
         insertInBTree(reg, &tree);
     }
-
 //    Imprime(tree);
-
     ItemType *busca = (ItemType *) malloc(sizeof(ItemType));
     busca->key = key;
     if (searchBTree(busca, tree)) return *busca;
