@@ -1,7 +1,26 @@
 #include "BTree.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+/*
+ * Função responsável pela busca de um item em uma arvore B.
+ * A função recebe como parâmetro a referencia de um item, e um endereço de
+ * memória que representa o nó raiz da árvore.
+ * A busca se baseia em :utilizar uma variável auxiliar como contadora que irá
+ * servir como um localizador do indice do item dentro do array de itens da
+ * página.Será então feita a comparação entre o item buscado e o item
+ * referenciado pelo contador,se os itens forem iguais a busca termina,
+ * retornando o item por referência e encerrando a busca com o status 1, caso os
+ * itens forem diferentes , é feita uma análise se o item buscado é maior ou
+ * menor que o item comparado na página corrente da árvore,caso o item buscado
+ * seja maior que o item comparado a função é invocada recursivamente para o
+ * apontador a direita do item atual,caso o item seja menor a função é invocada
+ * recursivamente para o apontador a esquerda.Este processo é repetido até que o
+ * item seja encontrado , ou o apontador a esquerda ou a direita de um item seja
+ * NULL.
+ *
+ * item = Registro proucurado
+ * Tree = Arvore
+ */
 int searchBTree(ItemType *item, PointerType Tree) {
     long i = 1;
     if (Tree == NULL) {
